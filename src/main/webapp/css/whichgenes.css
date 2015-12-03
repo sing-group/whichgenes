@@ -1,0 +1,48 @@
+body{
+	font-family: Arial,Verdana,Helvetica,sans-serif;
+	font-size: 13px;
+	margin-left:0px;
+	padding-left:0px;
+	padding-right:0px;
+	margin-right:0px;
+	background-color:white;
+	line-height:18px;
+	color:#777777;
+}
+h2{
+	font-family: 'Trebuchet MS',Arial,Verdana,Helvetica,sans-serif;
+	font-size:14;
+	color:#93499e;
+	margin-bottom:0px;
+	margin-top:0px;
+}
+h3{
+	font-family: 'Trebuchet MS',Arial,Verdana,Helvetica,sans-serif;
+	font-size:13;
+	color:#93499e;
+	margin-bottom:0px;
+	margin-top:0px;
+}
+p{
+	
+	font-family: Arial,Verdana,Helvetica,sans-serif;
+	color:#777777;
+	
+	margin:0px;
+}
+div{
+	font-family: Arial,Verdana,Helvetica,sans-serif;
+	font-size:12px;
+}
+div.layout-container{
+	background-color:white;
+}
+.z-tabbox-scrolltabs .z-tabbox-ul 
+
+{
+
+background-color:white;
+background-image:none;
+
+
+}

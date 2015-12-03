@@ -1,0 +1,25 @@
+<robot version="1.0">
+	<transformer class="SimpleTransformer" branchtype="CASCADE" branchmergemode="ORDERED" loop="false">
+		<description>SimpleTransformer</description>
+		<param key="description">SimpleTransformer</param>
+		<param key="inputFilter"></param>
+		<transformer class="Decorator" branchtype="CASCADE" branchmergemode="ORDERED" loop="false">
+			<description>Decorator</description>
+			<param key="description">Decorator</param>
+			<param key="head">http://www.targetscan.org/cgi-bin/vert_42/targetscan.cgi?mirg=</param>
+			<param key="inputFilter"></param>
+			<param key="tail"></param>
+		</transformer>
+		<transformer class="URLRetriever" branchtype="CASCADE" branchmergemode="ORDERED" loop="false">
+			<description>URLRetriever</description>
+			<param key="description">URLRetriever</param>
+			<param key="inputFilter"></param>
+		</transformer>
+		<transformer class="HTMLMatcher" branchtype="CASCADE" branchmergemode="ORDERED" loop="false">
+			<description>HTMLMatcher</description>
+			<param key="XPath"><![CDATA[//table[@id="restable"]/tr/td[1]/a]]></param>
+			<param key="description">HTMLMatcher</param>
+			<param key="inputFilter"></param>
+		</transformer>
+	</transformer>
+</robot>

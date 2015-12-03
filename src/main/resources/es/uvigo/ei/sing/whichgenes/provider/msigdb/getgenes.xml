@@ -1,0 +1,31 @@
+<robot version="1.0">
+	<transformer class="SimpleTransformer" branchtype="CASCADE" branchmergemode="ORDERED" loop="false">
+		<description>SimpleTransformer</description>
+		<param key="description">SimpleTransformer</param>
+		<param key="inputFilter"></param>
+		<transformer class="HTTPPost" branchtype="CASCADE" branchmergemode="ORDERED" loop="false">
+			<description>Login</description>
+			<param key="description">Login</param>
+			<param key="URL">http://www.broadinstitute.org/gsea/j_spring_security_check</param>
+			<param key="queryString"><![CDATA[j_username=dgpena@uvigo.es&j_password=password]]></param>
+		</transformer>
+		<transformer class="Decorator" branchtype="CASCADE" branchmergemode="ORDERED" loop="false">
+			<description>Decorator</description>
+			<param key="description">Decorator</param>
+			<param key="head">http://www.broad.mit.edu/gsea/msigdb/cards/</param>
+			<param key="inputFilter"></param>
+			<param key="tail">.html</param>
+		</transformer>
+		<transformer class="URLRetriever" branchtype="CASCADE" branchmergemode="ORDERED" loop="false">
+			<description>URLRetriever</description>
+			<param key="description">URLRetriever</param>
+			<param key="inputFilter"></param>
+		</transformer>
+		<transformer class="HTMLMatcher" branchtype="CASCADE" branchmergemode="ORDERED" loop="false">
+			<description>HTMLMatcher</description>
+			<param key="XPath"><![CDATA[//*[@id="geneListing"]/table//tr/td[3]/a/text()]]></param>
+			<param key="description">HTMLMatcher</param>
+			<param key="inputFilter"></param>
+		</transformer>
+	</transformer>
+</robot>

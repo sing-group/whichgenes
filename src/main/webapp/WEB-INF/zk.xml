@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+	<!--
+	Created by ZK Studio
+-->
+
+<zk>
+	<desktop-config>
+		<desktop-timeout>-1</desktop-timeout>
+		<!--
+			<disable-theme-uri>~./zul/css/norm*.css.dsp*</disable-theme-uri>
+			<file-check-period>5</file-check-period>
+			<extendlet-check-period>10</extendlet-check-period>
+		-->
+		<theme-uri>/css/whichgenes.css</theme-uri>
+
+		<keep-across-visits>true</keep-across-visits>
+
+		<!--
+			<theme-provider-class>my.MyThemeProvider</theme-provider-class>
+		-->
+	</desktop-config>
+	<session-config>
+		<session-timeout>-1</session-timeout>
+		<timer-keep-alive>true</timer-keep-alive>
+		<max-desktops-per-session>15</max-desktops-per-session>
+		<max-requests-per-session>5</max-requests-per-session>
+	</session-config>
+	<device-config>
+		<device-type>ajax</device-type>
+		<timeout-uri>/timeout.zul</timeout-uri>
+		<!--
+			An empty URL can cause the browser to reload the same URL
+		-->
+	</device-config>
+</zk>

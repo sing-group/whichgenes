@@ -1,0 +1,45 @@
+<robot version="1.0">
+	<transformer class="SimpleTransformer" branchtype="CASCADE" branchmergemode="ORDERED" loop="false">
+		<description>SimpleTransformer</description>
+		<param key="description">SimpleTransformer</param>
+		<param key="inputFilter"></param>
+		<transformer class="Decorator" branchtype="CASCADE" branchmergemode="ORDERED" loop="false">
+			<description>Decorator</description>
+			<param key="description">Decorator</param>
+			<param key="head">https://decipher.sanger.ac.uk/syndrome/</param>
+			<param key="inputFilter"></param>
+			<param key="tail">/cnvs</param>
+		</transformer>
+		<transformer class="URLRetriever" branchtype="CASCADE" branchmergemode="ORDERED" loop="false">
+			<description>URLRetriever</description>
+			<param key="description">URLRetriever</param>
+			<param key="inputFilter"></param>
+		</transformer>
+		<transformer class="PatternMatcher" branchtype="CASCADE" branchmergemode="ORDERED" loop="false">
+			<description>PatternMatcher</description>
+			<param key="description">PatternMatcher</param>
+			<param key="dotAll">true</param>
+			<param key="inputFilter"></param>
+			<param key="pattern"><![CDATA[(/syndrome/.*?/cnv/.*?)/tabs]]></param>
+		</transformer>
+		<transformer class="Decorator" branchtype="CASCADE" branchmergemode="ORDERED" loop="false">
+			<description>Decorator</description>
+			<param key="description">Decorator</param>
+			<param key="head">https://decipher.sanger.ac.uk</param>
+			<param key="inputFilter"></param>
+			<param key="tail">/genes</param>
+		</transformer>
+		<transformer class="URLRetriever" branchtype="CASCADE" branchmergemode="ORDERED" loop="false">
+			<description>URLRetriever</description>
+			<param key="description">URLRetriever</param>
+			<param key="inputFilter"></param>
+		</transformer>
+		<transformer class="HTMLMatcher" branchtype="CASCADE" branchmergemode="ORDERED" loop="false">
+				<description>HTMLMatcher</description>
+				<param key="XPath"><![CDATA[//table/tbody/tr/td[1]/a/text()]]></param>
+				<param key="description">HTMLMatcher</param>
+				<param key="inputFilter"></param>
+		</transformer>
+
+	</transformer>
+</robot>

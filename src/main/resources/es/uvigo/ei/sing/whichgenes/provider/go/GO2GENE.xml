@@ -1,0 +1,34 @@
+<robot version="1.0">
+	<transformer class="SimpleTransformer" branchtype="CASCADE" branchmergemode="SCATTERED" loop="false">
+		<description>SimpleTransformer</description>
+		<param key="description">SimpleTransformer</param>
+		<param key="inputFilter"></param>
+		<transformer class="Replacer" branchtype="CASCADE" branchmergemode="SCATTERED" loop="false">
+			<description>Replacer</description>
+			<param key="description">Replacer</param>
+			<param key="dest">%3A</param>
+			<param key="inputFilter"></param>
+			<param key="sourceRE">:</param>
+		</transformer>
+		<transformer class="Decorator" branchtype="CASCADE" branchmergemode="SCATTERED" loop="false">
+			<description>Decorator</description>
+			<param key="description">Decorator</param>
+			<param key="head">http://www.berkeleybop.org/goose?sql=SELECT+DISTINCT%0D%0A+dbxref.xref_key+AS+gp_acc%0D%0AFROM+term%0D%0A+INNER+JOIN+graph_path+ON+%28term.id%3Dgraph_path.term1_id%29%0D%0A+INNER+JOIN+association+ON+%28graph_path.term2_id%3Dassociation.term_id%29%0D%0A+INNER+JOIN+gene_product+ON+%28association.gene_product_id%3Dgene_product.id%29%0D%0A+INNER+JOIN+species+ON+%28gene_product.species_id%3Dspecies.id%29%0D%0A+INNER+JOIN+dbxref+ON+%28gene_product.dbxref_id%3Ddbxref.id%29%0D%0AWHERE%0D%0A+term.acc+%3D+%27</param>
+			<param key="inputFilter"></param>
+			<param key="tail"><![CDATA[%27%0D%0A+AND%0D%0A+species.genus+%3D+%27Homo%27%0D%0A+AND%0D%0A+dbxref.xref_dbname+like+'%25UniProtKB%25'&limit=0&mirror=1&format=tab]]></param>
+		</transformer>
+		<transformer class="URLRetriever" branchtype="CASCADE" branchmergemode="SCATTERED" loop="false">
+			<description>URLRetriever</description>
+			<param key="description">URLRetriever</param>
+			<param key="inputFilter"></param>
+		</transformer>
+		<transformer class="PatternMatcher" branchtype="CASCADE" branchmergemode="SCATTERED" loop="false">
+			<description>PatternMatcher</description>
+			<param key="description">PatternMatcher</param>
+			<param key="dotAll">true</param>
+			<param key="inputFilter"></param>
+			<param key="pattern">(.*?)\n</param>
+		</transformer>
+
+	</transformer>
+</robot>

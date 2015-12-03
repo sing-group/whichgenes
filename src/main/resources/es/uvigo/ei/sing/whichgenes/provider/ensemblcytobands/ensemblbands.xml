@@ -1,0 +1,87 @@
+<robot version="1.0">
+	<transformer class="SimpleTransformer" branchtype="CASCADE" branchmergemode="ORDERED" loop="false">
+		<description>SimpleTransformer</description>
+		<param key="description">SimpleTransformer</param>
+		<param key="inputFilter"></param>
+		<transformer class="SimpleTransformer" branchtype="BRANCH_DUPLICATED" branchmergemode="ORDERED" loop="false">
+			<description>SimpleTransformer</description>
+			<param key="description">SimpleTransformer</param>
+			<param key="inputFilter"></param>
+			<transformer class="SimpleTransformer" branchtype="CASCADE" branchmergemode="ORDERED" loop="false">
+				<description>SimpleTransformer</description>
+				<param key="description">SimpleTransformer</param>
+				<param key="inputFilter">2-</param>
+			</transformer>
+			<transformer class="SimpleTransformer" branchtype="CASCADE" branchmergemode="ORDERED" loop="false">
+				<description>SimpleTransformer</description>
+				<param key="description">SimpleTransformer</param>
+				<param key="inputFilter">0,1</param>
+				<transformer class="Replacer" branchtype="CASCADE" branchmergemode="ORDERED" loop="false">
+					<description>throwing out spaces</description>
+					<param key="description">throwing out spaces</param>
+					<param key="dest"></param>
+					<param key="inputFilter"></param>
+					<param key="sourceRE"> </param>
+				</transformer>
+				<transformer class="Replacer" branchtype="CASCADE" branchmergemode="ORDERED" loop="false">
+					<description>Replacer</description>
+					<param key="description">Replacer</param>
+					<param key="dest"></param>
+					<param key="inputFilter"></param>
+					<param key="sourceRE">Chr</param>
+				</transformer>
+				<transformer class="Replacer" branchtype="CASCADE" branchmergemode="ORDERED" loop="false">
+					<description>Replacer</description>
+					<param key="description">Replacer</param>
+					<param key="dest"><![CDATA["/><Filter name = "band_start" value = "]]></param>
+					<param key="inputFilter"></param>
+					<param key="sourceRE">:</param>
+				</transformer>
+				<transformer class="Replacer" branchtype="CASCADE" branchmergemode="ORDERED" loop="false">
+					<description>Replacer</description>
+					<param key="description">Replacer</param>
+					<param key="dest"><![CDATA["/><Filter name = "band_end" value = "]]></param>
+					<param key="inputFilter"></param>
+					<param key="sourceRE">\-</param>
+				</transformer>
+				<transformer class="Decorator" branchtype="CASCADE" branchmergemode="ORDERED" loop="false">
+					<description>Decorator</description>
+					<param key="description">Decorator</param>
+					<param key="head"><![CDATA[<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE Query><Query  virtualSchemaName = "default" formatter = "TSV" header = "0" uniqueRows = "1" count = "" datasetConfigVersion = "0.6" ><Dataset name = "_SPECIE_" interface = "default" ><Filter name = "chromosome_name" value = "]]></param>
+					<param key="inputFilter"></param>
+					<param key="tail"><![CDATA["/><Attribute name = "_output_" /></Dataset></Query>]]></param>
+				</transformer>
+			</transformer>
+		</transformer>
+		<transformer class="Replacer" branchtype="CASCADE" branchmergemode="ORDERED" loop="false">
+			<description>Replacer</description>
+			<param key="description">Replacer</param>
+			<param key="dest">%%0%%</param>
+			<param key="inputFilter">0</param>
+			<param key="sourceRE">_SPECIE_</param>
+		</transformer>
+		<transformer class="Replacer" branchtype="CASCADE" branchmergemode="ORDERED" loop="false">
+			<description>Replacer</description>
+			<param key="description">Replacer</param>
+			<param key="dest">%%0%%</param>
+			<param key="inputFilter">0</param>
+			<param key="sourceRE">_output_</param>
+		</transformer>
+		<transformer class="HTTPPost" branchtype="CASCADE" branchmergemode="ORDERED" loop="false">
+			<description>HTTPPost</description>
+			<param key="URL">http://www.ensembl.org/biomart/martservice</param>
+			<param key="description">HTTPPost</param>
+			<param key="inputFilter"></param>
+			<param key="outputHTTPOutputs">true</param>
+			<param key="querySeparator">#impossible#</param>
+			<param key="queryString">query=%%0%%</param>
+		</transformer>
+		<transformer class="PatternMatcher" branchtype="CASCADE" branchmergemode="ORDERED" loop="false">
+			<description>PatternMatcher</description>
+			<param key="description">PatternMatcher</param>
+			<param key="dotAll">true</param>
+			<param key="inputFilter"></param>
+			<param key="pattern">(.*?)\n</param>
+		</transformer>
+	</transformer>
+</robot>

@@ -1,0 +1,30 @@
+<robot version="1.0">
+	<transformer class="SimpleTransformer" branchtype="CASCADE" branchmergemode="ORDERED" loop="false">
+		<description>SimpleTransformer</description>
+		<param key="description">SimpleTransformer</param>
+		<param key="inputFilter"></param>
+		<transformer class="Decorator" branchtype="CASCADE" branchmergemode="ORDERED" loop="false">
+			<description>Decorator</description>
+			<param key="description">Decorator</param>
+			<param key="head"><![CDATA[<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE Query><Query  virtualSchemaName = "default" formatter = "TSV" header = "0" uniqueRows = "1" count = "" datasetConfigVersion = "0.6" ><Dataset name = "%%2%%" interface = "default" ><Filter name = "%%0%%" value = "]]></param>
+			<param key="inputFilter">0,1,2</param>
+			<param key="tail"><![CDATA["/><Attribute name = "%%1%%" /></Dataset></Query>]]></param>
+		</transformer>
+		<transformer class="HTTPPost" branchtype="CASCADE" branchmergemode="ORDERED" loop="false">
+			<description>HTTPPost</description>
+			<param key="URL">http://www.ensembl.org/biomart/martservice</param>
+			<param key="description">HTTPPost</param>
+			<param key="inputFilter"></param>
+			<param key="outputHTTPOutputs">true</param>
+			<param key="querySeparator"> @@impossible</param>
+			<param key="queryString">query=%%0%%</param>
+		</transformer>
+		<transformer class="PatternMatcher" branchtype="CASCADE" branchmergemode="ORDERED" loop="false">
+			<description>PatternMatcher</description>
+			<param key="description">PatternMatcher</param>
+			<param key="dotAll">true</param>
+			<param key="inputFilter"></param>
+			<param key="pattern">(\p{Graph}+?)\n</param>
+		</transformer>
+	</transformer>
+</robot>

@@ -1,0 +1,26 @@
+<robot version="1.0">
+	<transformer class="SimpleTransformer" branchtype="CASCADE" branchmergemode="ORDERED" loop="false">
+		<description>SimpleTransformer</description>
+		<param key="description">SimpleTransformer</param>
+		<param key="inputFilter"></param>
+		<transformer class="Decorator" branchtype="CASCADE" branchmergemode="ORDERED" loop="false">
+			<description>Decorator</description>
+			<param key="description">Decorator</param>
+			<param key="head"><![CDATA[http://www.ebi.ac.uk:80/intact/export?format=mitab_25&query=]]></param>
+			<param key="inputFilter"></param>
+			<param key="tail"><![CDATA[&negative=false&spoke=false&ontology=false&sort=intact-miscore&asc=false]]></param>
+		</transformer>
+		<transformer class="URLRetriever" branchtype="CASCADE" branchmergemode="ORDERED" loop="false">
+			<description>URLRetriever</description>
+			<param key="description">URLRetriever</param>
+			<param key="inputFilter"></param>
+		</transformer>
+		<transformer class="PatternMatcher" branchtype="CASCADE" branchmergemode="ORDERED" loop="false">
+			<description>PatternMatcher</description>
+			<param key="description">PatternMatcher</param>
+			<param key="dotAll">false</param>
+			<param key="inputFilter"></param>
+			<param key="pattern">uniprotkb:([PQ][A-Z0-9]+)\t</param>
+		</transformer>
+	</transformer>
+</robot>

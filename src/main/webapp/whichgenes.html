@@ -1,0 +1,361 @@
+<!-- 
+	This file is part of WhichGenes.
+
+    WhichGenes is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Lesser General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    WhichGenes is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public License
+    along with Lesser.  If not, see <http://www.gnu.org/licenses/
+ -->
+<?component name="genesetbasket" class="es.uvigo.ei.sing.whichgenes.zkgui.BasketMiniView" extends="window"?>
+<?component name="basketmanager" class="es.uvigo.ei.sing.whichgenes.zkgui.BasketManager" extends="vbox"?> 
+<?component name="multiplequerymanager" class="es.uvigo.ei.sing.whichgenes.zkgui.MultipleQueryManager" extends="vbox"?>
+<?component name="freequerybox" class="es.uvigo.ei.sing.whichgenes.zkgui.FreeQueryBox" extends="groupbox"?>
+<?component name="constrainedquerybox" class="es.uvigo.ei.sing.whichgenes.zkgui.ConstrainedQueryBox" extends="groupbox"?>
+<?component name="loginbox" class="es.uvigo.ei.sing.whichgenes.zkgui.LoginBox" extends="vbox"?>
+
+<borderlayout id="applayout" height="800px" >
+	
+	<north maxsize="300" size="200" border="none" splittable="false" collapsible="false">
+		
+		<vbox width="100%" style="z-index:5">
+		
+		<div style="text-align:right;background-image:url('titlebackground.png');">
+			
+			<hbox>
+			<html>
+			<![CDATA[
+				 <table width="100%">
+				<tr>
+					<td width="60%" valign="top">
+				 	<p style="margin-left:10px;margin-top:0px;font-size:0.95em;font-style:italic;color:white;font-family: 'Trebuchet MS',Verdana,Arial,Helvetica,sans-serif">
+						<span style="color:#5A2D5F;font-size:1.15em;font-weight:bold">Gene Set building tool</span><br>					 
+					WhichGenes is a simple, but powerful gene set building tool. It allows the user to extract lists of genes from multiple sources in order to use them for further experiments.
+					 </p>
+				 </td>
+				 <td valign="top" align="right">
+					 <p style="margin-left:10px;margin-top:0px;font-size:0.95em;font-style:italic;color:white;font-family: 'Trebuchet MS',Verdana,Arial,Helvetica,sans-serif">
+						 <span style="text-align:right; color:#C69200;font-size:1.15em;font-weight:bold">Quick Start</span><br>					 
+						1. Select the <b>source</b> for extraction.<br>
+						2. Configure the <b>query</b>.<br>
+						3. Retrieve and give a <b>name</b> to your new set.<br>
+						4. Repeat the above steps or...<br>
+						5. <b>Export</b> your sets to your favourite format.
+					 </p>
+				 </td>
+				 </tr>
+			 	</table>
+								
+			]]>
+			</html>
+			<div style="z-index:9"><image src="logo.png" > </image></div>
+			</hbox>
+		</div>
+			<label id="messages" style="color:red" visible="false"></label>
+			<div style="margin-top:-67px;margin-left:20px; z-index:10;position:relative"><hbox id="hellobox" visible="false"><image src="user.png"/><label style="color:white" value="" id="welcome"/><button label="logout" onClick="loginbox.doLogout()"/></hbox></div>
+		</vbox>
+
+	</north> 
+	
+	<center border="0" style="padding-left:10px;padding-right:10px;margin-top:-20px;top:140px;background-color:transparent;z-index:11">
+		<vbox width="100%" height="100%" visible="false" id="centerbox">
+			<hbox id="presentation" widths="100%,400px">
+				<groupbox style="margin-top:20px;margin-right:15px;" mold="3d">
+					<caption label="Welcome!"/>
+					<div>
+					<html>
+						<![CDATA[
+							<h2>What is <b>WhichGenes</b>?</h2>
+							<table border="0" cellpadding=0 cellspacing=0><tr><td valign="top">
+							<p>
+								WhichGenes is an bioinformatics gene set building tool. It allows the user to create and manage custom genesets extracted from
+								several sources. Currently, WhichGenes can extract genes from:
+								]]>
+					</html>
+					<div><html id="sourceslabel"/> </div>
+					<html>
+						<![CDATA[
+							 
+							</p>
+						</td><td><img src="whichgenes1.png"></img></td></tr></table>
+							<p>
+								
+							</p>
+							
+							<table border="0"><tr>
+							<td valign="top"><img src="whichgenes2.png"></img></td>		
+							<td valign="top">
+								<h3>Open-Source</h3>
+							<p>
+								WhichGenes is an open-source project. Moreover, it is intended to be extensible, specially when adding new sources to extract gene lists.
+								
+							</p>
+							<h3>DB-Free</h3>
+							<p>
+								WhichGenes is tries to avoid the usage of a local database as possible in order to always retrieve up-to-date gene lists coming directly from the third party databases (GeneCards, KEGG, AmiGO, etc.)
+							</p>
+						</td></tr></table>
+						<h3>Start now!</h3>
+						<p>
+							In order to use WhichGenes, you first need an user name. Press in the "New user" button in the login box on the top-right of this screen.
+						</p>
+							]]>
+					</html>
+				</div>
+				</groupbox>
+					<div style="margin-top:20px" width="100%">
+						<loginbox onLogin="hellobox.visible=true;presentation.visible=false;tabbox.visible=true;welcome.value=&quot;Welcome &quot;+event.data.name+&quot; (&quot;+event.data.email+&quot;)&quot;" onLogout="hellobox.visible=false;presentation.visible=true;tabbox.visible=false" id="loginbox"/>
+				</div>
+				</hbox>
+		
+		<tabbox  width="100%" visible="false" id="tabbox">
+			<tabs >
+				<tab label="create set"/>
+				<tab id="baskettab" label="basket"/>
+			</tabs>
+		<tabpanels id="tabpanels">
+			<tabpanel height="100%">
+				
+			<hbox width="100%" height="100%" widths="150px,100%" style="padding-left:10px;">
+				<hbox>
+						<vbox spacing="0">
+							<genesetbasket id="basketview" visible="false"/> 
+							<vbox>	
+								<image src="1source.png"/>
+								<groupbox mold="3d" width="300px">
+									<caption label="Source"/>
+									<vbox>
+								
+										<label>Select the source to extract the gene set</label>
+								
+										<combobox width="250px" id="source" onSelect="sourceChanged()"></combobox>
+								
+										</vbox>
+							
+								</groupbox>
+							</vbox>
+							
+							<vbox id="constraints" visible="false">
+								<image src="2query.png"/>
+								<freequerybox width="300px" id="freequerybox" visible="false"/>
+								<constrainedquerybox width="300px" id="constrainedquerybox" onSearch="search()" visible="false"/>
+							<!--	<groupbox mold="3d"  width="300px">
+									<caption label="Specify the Query"/>
+									<vbox>
+										<hbox>
+											<label id="fc_label"></label>
+											<vbox>
+												<textbox id="fc_constraint" onOK="search()"></textbox>
+												<label style="font-size:0.8em;color:gray" id="fc_description"></label>
+											</vbox>
+										</hbox>
+										<button id="gobutton" label="GO!" onClick="search()"/>
+							
+							
+									</vbox> 
+							
+								</groupbox>-->
+							
+								<image src="3name.png"/>
+								<groupbox mold="3d" >
+									<caption label="Name"/>
+									<hbox>
+										
+										<label>Name: </label><textbox id="setname" onOK="search()" onChanging="searchbutton.disabled = (event.value.length()==0)"/><button id="searchbutton" label="search" onClick="search()" disabled="true"/>
+										
+									</hbox>
+									
+								</groupbox>
+							</vbox>
+							
+							
+						</vbox>
+						
+					
+					
+					
+					
+				</hbox>
+				
+				
+				<div style="border-left:2px solid #d2d2d2;padding-left:5px;align:left; margin-left:10px" id="querymanagerbox">
+				
+				</div>
+				
+			</hbox>
+			
+			
+		
+		</tabpanel>
+		<tabpanel>
+			<basketmanager id="basketmanager" width="100%"/>
+		</tabpanel>
+	</tabpanels>
+</tabbox>
+</vbox>
+	</center>	
+	<south border="0" style="margin-top:-20px">
+		
+		<div style="text-align:center;" width="100%">WhichGenes Project v0.1. SING Group. University of Vigo<timer delay="0" repeats="false" onTimer="autologin()" id="autologintimer"/></div>
+		
+		
+	</south>
+	
+	<zscript>
+		<![CDATA[
+		
+		
+		
+		
+		//populate combo with sources
+		import es.uvigo.ei.sing.whichgenes.*;
+		import es.uvigo.ei.sing.whichgenes.provider.*;
+		import es.uvigo.ei.sing.whichgenes.query.*;
+		import es.uvigo.ei.sing.whichgenes.geneset.*;
+		import es.uvigo.ei.sing.whichgenes.zkgui.*;
+		import java.util.*;
+		
+		String getParameter(String name){
+			Object item =  desktop.execution.nativeRequest.getParameter(name);
+			if(item!=null) return item.toString();
+			else return null;
+		}
+		
+		System.out.println();
+		String decodePass(){			
+			return Util.DesEncrypter.decrypt(getParameter("p"));			
+		}
+		
+		String login=null;
+		String pass=null;
+		String selectedSet=null;
+		boolean activate;
+		if (getParameter("t")!=null){
+			if (getParameter("t").equals("sg")){
+			// see group
+				login = getParameter("l");
+				pass = decodePass();			
+				selectedSet = getParameter("s");
+				
+				
+			}
+			else if (getParameter("t").equals("a")) {
+				login = getParameter("l");
+				pass = decodePass();				
+				activate = true;
+			}
+		}
+		
+		
+		page.setTitle("WhichGenes 1.0");
+		
+		
+		public class BasketListener implements Observer{
+			public void update(Observable obs, Object obj){
+				baskettab.setLabel("basket ("+obs.getSets().size()+" sets)");
+			}
+		}
+		Basket basket = new Basket();
+		session.setAttribute("basket", basket);
+		observer = new BasketListener();		
+		basket.addObserver(observer);
+		observer.update(basket,null); //produce an initial update...
+		
+		basketview.setBasket(basket);
+		basketmanager.setBasket(basket);
+		
+		HashMap providers = new HashMap();
+		
+		String sourcesIntro="<ul>";
+		List l = ProvidersFacade.getProviders();
+		for (int i = 0; i<l.size(); i++){
+			providers.put(l.get(i).getName(), l.get(i));
+			source.appendItem(l.get(i).getName());
+			sourcesIntro+="<li><b>"+l.get(i).getName()+".</b> "+l.get(i).getDescription()+"</li>";
+		}
+		sourcesIntro+="</ul>";
+		
+		Query q = null;
+		void sourceChanged(){
+			messages.value="hola";
+			constraints.visible=true;
+			GeneSetProvider provider = providers.get(source.getSelectedItem().label);
+			
+			if (provider != null){
+				q = provider.newQuery();
+				if (q instanceof FreeQuery){
+					freequerybox.visible=true;
+					constrainedquerybox.visible=false;
+					freequerybox.setQuery(q);
+					freequerybox.clearQuery();
+				}else if (q instanceof ConstrainedQuery){
+					constrainedquerybox.visible=true;
+					freequerybox.visible=false;
+					constrainedquerybox.setQuery(q);
+					
+				}
+			}
+			
+		}
+		
+		
+		messages.value="<void>";
+		qmanager=null;
+		void search(){
+			if (basket.getByName(setname.value)!=null){
+				Messagebox.show("The basket already has a set named: "+setname.value, "Error", Messagebox.OK, Messagebox.ERROR);
+				return;
+			}
+			if(qmanager==null){
+				def = page.getComponentDefinition("multiplequerymanager", false);
+				
+				qmanager = desktop.getWebApp().getUiFactory().newComponent(page, querymanagerbox, def, null);
+				
+				qmanager.setBasket(basket);
+				qmanager.setListHeight("450px");
+				qmanager.setWidth("100%");
+				
+			}
+			if (q instanceof FreeQuery){
+				q.setQuery(freequerybox.getQuery());				
+				qmanager.newQuery(q,setname.value);
+		
+			}else if (q instanceof ConstrainedQuery){
+				q.setConstrainedValues(constrainedquerybox.getConstrainedValues());
+				qmanager.newQuery(q,setname.value);
+			}
+		
+		}
+		autologintimer.start();
+		void autologin(){
+		
+		
+			if (login!=null){
+				loginbox.doLogin(login,pass,activate);
+				
+				if(selectedSet!=null){
+					if (basket.getByName(selectedSet)==null){
+						Messagebox.show("Sorry, the set "+selectedSet+" is no longer available.", "Error", Messagebox.OK, Messagebox.ERROR);
+					}else{
+						basketmanager.selectSet(basket.getByName(selectedSet));
+						basketmanager.doEditSelected();
+						tabbox.selectedIndex = 1;
+						
+						tabbox.invalidate();
+					}
+				}
+			
+			}
+			centerbox.visible=true;
+			sourceslabel.content = sourcesIntro;
+		}
+		]]>
+	</zscript>
+</borderlayout>

@@ -1,0 +1,22 @@
+<robot version="1.0">
+	<transformer class="SimpleTransformer" branchtype="CASCADE" branchmergemode="SCATTERED" loop="false">
+		<description>SimpleTransformer</description>
+		<param key="description">SimpleTransformer</param>
+		<transformer class="Decorator" branchtype="CASCADE" branchmergemode="SCATTERED" loop="false">
+			<description>Decorator</description>
+			<param key="description">Decorator</param>
+			<param key="head"><![CDATA[http://www.genecards.org/index.php?path=%2FSearch%2FAdvanced%2F%5B%7Bby%3A%22keyword%22%2Cf%3A%22text%22%2Ctxt%3A%22]]></param>
+			<param key="tail"><![CDATA[%22%7D%5D%2F%5B%5D%2F0%2Fcsv#searchResults]]></param>
+		</transformer>
+		<transformer class="URLRetriever" branchtype="CASCADE" branchmergemode="SCATTERED" loop="false">
+			<description>URLRetriever</description>
+			<param key="description">URLRetriever</param>
+		</transformer>		
+		<transformer class="PatternMatcher" branchtype="CASCADE" branchmergemode="SCATTERED" loop="false">
+			<description>PatternMatcher</description>
+			<param key="description">PatternMatcher</param>
+			<param key="dotAll">false</param>
+			<param key="pattern"><![CDATA[path=/GeneCard/card/(.*?)"]]></param>
+		</transformer>
+	</transformer>
+</robot>

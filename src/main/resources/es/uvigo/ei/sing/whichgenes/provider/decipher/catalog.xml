@@ -1,0 +1,69 @@
+<robot version="1.0">
+	<transformer class="SimpleTransformer" branchtype="CASCADE" branchmergemode="ORDERED" loop="false">
+		<description>SimpleTransformer</description>
+		<param key="description">SimpleTransformer</param>
+		<param key="inputFilter"></param>
+		<transformer class="Appender" branchtype="CASCADE" branchmergemode="ORDERED" loop="false">
+			<description>Appender</description>
+			<param key="append">https://decipher.sanger.ac.uk/syndromes#syndromes/overview</param>
+			<param key="description">Appender</param>
+			<param key="inputFilter"></param>
+		</transformer>
+		<transformer class="URLRetriever" branchtype="CASCADE" branchmergemode="ORDERED" loop="false">
+			<description>URLRetriever</description>
+			<param key="description">URLRetriever</param>
+			<param key="inputFilter"></param>
+		</transformer>
+		
+		<transformer class="SimpleTransformer" branchtype="BRANCH_DUPLICATED" branchmergemode="SCATTERED" loop="false">
+			<description>SimpleTransformer</description>
+			<param key="description">SimpleTransformer</param>
+			<param key="inputFilter"></param>
+			<transformer class="HTMLMatcher" branchtype="CASCADE" branchmergemode="ORDERED" loop="false">
+				<description>HTMLMatcher</description>
+				<param key="XPath"><![CDATA[//tr[contains(@data-href, "syndrome/")]/@data-href]]></param>
+				<param key="description">HTMLMatcher</param>
+				<param key="inputFilter"></param>
+				<transformer class="PatternMatcher" branchtype="CASCADE" branchmergemode="ORDERED" loop="false">
+					<description>PatternMatcher</description>
+					<param key="description">PatternMatcher</param>
+					<param key="dotAll">true</param>
+					<param key="inputFilter"></param>
+					<param key="pattern">syndrome/([0-9]+)</param>
+				</transformer>
+				<transformer class="Decorator" branchtype="CASCADE" branchmergemode="ORDERED" loop="false">
+					<description>Decorator</description>
+					<param key="description">Decorator</param>
+					<param key="head"></param>
+					<param key="inputFilter"></param>
+					<param key="tail">\t</param>
+				</transformer>
+			</transformer>
+			<transformer class="HTMLMatcher" branchtype="CASCADE" branchmergemode="ORDERED" loop="false">
+				<description>HTMLMatcher</description>
+				<param key="XPath"><![CDATA[//tr[contains(@data-href, "syndrome/")]/td[1]/text()]]></param>
+				<param key="description">HTMLMatcher</param>
+				<param key="inputFilter"></param>
+				<transformer class="Replacer" branchtype="CASCADE" branchmergemode="ORDERED" loop="false">
+					<description>Replacer</description>
+					<param key="description">Replacer</param>
+					<param key="dest">_</param>
+					<param key="inputFilter"></param>
+					<param key="sourceRE">\n</param>
+				</transformer>
+				<transformer class="Decorator" branchtype="CASCADE" branchmergemode="ORDERED" loop="false">
+					<description>Decorator</description>
+					<param key="description">Decorator</param>
+					<param key="head"></param>
+					<param key="inputFilter"></param>
+					<param key="tail">\n</param>
+				</transformer>
+			</transformer>
+		</transformer> 
+		<transformer class="Merger" branchtype="CASCADE" branchmergemode="ORDERED" loop="false">
+			<description>Merger</description>
+			<param key="description">Merger</param>
+			<param key="inputFilter"></param>
+		</transformer>
+	</transformer>
+</robot>

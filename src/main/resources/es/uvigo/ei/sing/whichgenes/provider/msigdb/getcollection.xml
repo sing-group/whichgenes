@@ -1,0 +1,33 @@
+<robot version="1.0">
+	<transformer class="SimpleTransformer" branchtype="CASCADE" branchmergemode="ORDERED" loop="false">
+		<description>SimpleTransformer</description>
+		<param key="description">SimpleTransformer</param>
+		<param key="inputFilter"></param>
+
+		<transformer class="HTTPPost" branchtype="CASCADE" branchmergemode="ORDERED" loop="false">
+			<description>Login</description>
+			<param key="description">Login</param>
+			<param key="URL">http://software.broadinstitute.org/gsea/j_spring_security_check</param>
+			<param key="queryString"><![CDATA[j_username=dgpena@uvigo.es&j_password=password]]></param>
+		</transformer>
+		<transformer class="Decorator" branchtype="CASCADE" branchmergemode="ORDERED" loop="false">
+			<description>Decorator</description>
+			<param key="description">Decorator</param>
+			<param key="head">http://www.broadinstitute.org/gsea/msigdb/genesets.jsp?collection=</param>
+			<param key="inputFilter"></param>
+			<param key="tail"></param>
+		</transformer>
+		<transformer class="URLRetriever" branchtype="CASCADE" branchmergemode="ORDERED" loop="false">
+			<description>URLRetriever</description>
+			<param key="description">URLRetriever</param>
+			<param key="inputFilter"></param>
+		</transformer>
+		<transformer class="PatternMatcher" branchtype="CASCADE" branchmergemode="ORDERED" loop="false">
+			<description>PatternMatcher</description>
+			<param key="description">PatternMatcher</param>
+			<param key="dotAll">true</param>
+			<param key="inputFilter"></param>
+			<param key="pattern"><![CDATA[<a href="cards/[^"]*">(.*?)</a>]]></param>
+		</transformer>
+	</transformer>
+</robot>
