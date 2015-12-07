@@ -17,23 +17,40 @@
 
 package es.uvigo.ei.sing.whichgenes.provider.aautomator;
 
+import java.io.InputStreamReader;
 import java.util.LinkedList;
 
 import es.uvigo.ei.sing.jarvest.core.OutputHandler;
 import es.uvigo.ei.sing.jarvest.core.Transformer;
 import es.uvigo.ei.sing.jarvest.core.XMLInputOutput;
+import es.uvigo.ei.sing.jarvest.dsl.Jarvest;
 
 
 public class Util {
+	private static Transformer readRobot(String resourcePath) {
+		Transformer robot = null;
+		if (resourcePath.endsWith(".rb")) {
+			Jarvest j = new Jarvest();
+			robot = j.eval(new InputStreamReader(Util.class.getResourceAsStream(resourcePath)));
+			
+		} else {
+			robot = XMLInputOutput.loadTransformer(Util.class.getResourceAsStream(resourcePath));
+		}
+		return robot;
+		
+	}
+	
 	public static String[] runRobot(String resourcePath, String[] input) {
-		Transformer robot = XMLInputOutput.loadTransformer(Util.class.getResourceAsStream(resourcePath));
+		Transformer robot = readRobot(resourcePath);
 		return runRobot(robot, input);
 	}
+	
 	public static void runRobot(String resourcePath, OutputHandler handler, String[] input) {
-		Transformer robot = XMLInputOutput.loadTransformer(Util.class.getResourceAsStream(resourcePath));
+		Transformer robot = readRobot(resourcePath);
 		runRobot(robot, handler, input);
 		
 	}
+	
 	public static String[] runRobot(Transformer robot, String[] input) {
 		
 		final LinkedList<String> output = new LinkedList<String>();
