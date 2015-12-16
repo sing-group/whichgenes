@@ -189,6 +189,7 @@
 										<!-- pathways -->
 										<a href="http://www.genome.ad.jp/kegg/pathway.html"><img alt="KEGG Pathway Database" src="sources/kegg.gif" border="0"></img></a>
 										<a href="http://www.biocarta.com"><img alt="Biocarta Pathway Database" src="sources/biocarta.png" border="0"></img></a>
+										<a href="http://www.reactome.org"><img alt="Reactome Pathway Database" src="sources/reactome.png" border="0"></img></a>
 										
 										<!-- positional -->
 										<a href="http://www.broad.mit.edu/gsea/msigdb/index.jsp"><img alt="Molecular Signatures Database" src="sources/msigdb.gif" border="0"></img></a>

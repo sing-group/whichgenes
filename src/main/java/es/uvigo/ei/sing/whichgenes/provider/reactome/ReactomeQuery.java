@@ -17,20 +17,20 @@
 
 package es.uvigo.ei.sing.whichgenes.provider.reactome;
 
-import java.awt.EventQueue;
-import java.awt.Toolkit;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.net.URL;
 import java.rmi.RemoteException;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Stack;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 import es.uvigo.ei.sing.whichgenes.provider.DefaultTreeNode;
 import es.uvigo.ei.sing.whichgenes.provider.GeneSetProvider;
@@ -48,10 +48,57 @@ public class ReactomeQuery extends ConstrainedQuery {
 		this.specie = specie;
 	}
 	
+	public static void main(String[] args) {
+		new ReactomeQuery(new ReactomeProvider("hsa"), "hsa").getConstraints();
+	}
+	
 	@Override
 	public List<TreeNode> getConstraints() {
-		List<TreeNode> nodes = new LinkedList<TreeNode>();
-		for (String path:ReactomeManager.getPathways(this.specie)){
+	    try {
+	    	final List<TreeNode> nodes = new LinkedList<TreeNode>();
+	    	final Stack<DefaultTreeNode> nodeStack = new Stack<DefaultTreeNode>();
+	    	SAXParserFactory spf = SAXParserFactory.newInstance();
+	    	spf.setNamespaceAware(true);
+			SAXParser saxParser = spf.newSAXParser();
+			
+			String specie = "";
+			if (this.specie.equalsIgnoreCase("hsa")) {
+				specie = "homo+sapiens";
+			} else if (this.specie.equalsIgnoreCase("mmu")) {
+				specie = "mus+musculus";
+			}
+			saxParser.parse(new URL("http://reactome.org/ReactomeRESTfulAPI/RESTfulWS/pathwayHierarchy/"+specie).openStream(), new DefaultHandler(){
+				
+				@Override
+				public void startElement(String uri, String localName, String qName, Attributes attributes)
+						throws SAXException {
+					if (localName.equalsIgnoreCase("pathway")) {
+						DefaultTreeNode node = new DefaultTreeNode(attributes.getValue("dbId"), attributes.getValue("displayName"));
+						if (nodeStack.size()>0) {
+							nodeStack.peek().addChild(node);
+						}
+						nodeStack.push(node);
+					}
+				}
+				
+				@Override
+				public void endElement(String uri, String localName, String qName) throws SAXException {
+					if (localName.equalsIgnoreCase("pathway")) {
+						DefaultTreeNode node = nodeStack.pop();
+						if (nodeStack.size()==0) {
+							nodes.add(node);
+						}
+					}
+				}
+			}, "");
+			
+			return nodes;
+			
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	    
+		/*for (String path:ReactomeManager.getPathways(this.specie)){
 			String[] pair = path.split("\t");
 			if (pair == null || pair.length<2) continue;
 			String name = pair[1];
@@ -65,8 +112,8 @@ public class ReactomeQuery extends ConstrainedQuery {
 				return arg0.getName().compareTo(arg1.getName());
 			}
 			
-		});
-		return nodes;
+		});*/
+		
 	}
 
 	public String getParameterDescription() {
@@ -78,8 +125,6 @@ public class ReactomeQuery extends ConstrainedQuery {
 	}
 
 	public void runQuery(final QueryHandler handler)  {
-		HashSet<String> norepeat = new HashSet<String>();
-		AautomatorQueryRunner runner  = new AautomatorQueryRunner();
 		for (TreeNode node : this.getConstrainedValues()){
 			String pathid = node.getID();
 			Collection<String> pathway_genes;
@@ -98,11 +143,11 @@ public class ReactomeQuery extends ConstrainedQuery {
 					
 					
 					String[] names = null;
-					if (specie.equalsIgnoreCase("homo sapiens")){
-						names = IDConverter.convert("hsapiens_gene_ensembl", "uniprot_swissprot", "hgnc_symbol", genes);
+					if (specie.equalsIgnoreCase("hsa")){
+						names = IDConverter.convert("hsapiens_gene_ensembl", new String[]{"uniprot_swissprot", "uniprot_sptrembl"}, "hgnc_symbol", genes);
 						
-					}else if (specie.equalsIgnoreCase("mus musculus")){
-						names = IDConverter.convert("mmusculus_gene_ensembl", "uniprot_swissprot", "mgi_symbol", genes);
+					}else if (specie.equalsIgnoreCase("mmu")){
+						names = IDConverter.convert("mmusculus_gene_ensembl", new String[]{"uniprot_swissprot", "uniprot_sptrembl"}, "mgi_symbol", genes);
 						
 					}
 					

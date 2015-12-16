@@ -55,8 +55,8 @@ public class ProvidersFacade {
 		providers.add(new KEGGProvider("mmu"));
 		providers.add(new BiocartaProvider("hsa", "hgnc_symbol"));
 		providers.add(new BiocartaProvider("mmu","mgi_symbol"));
-		//providers.add(new ReactomeProvider("Homo sapiens")); //reactome BioMart is maintained, disabled
-		//providers.add(new ReactomeProvider("Mus musculus"));
+		providers.add(new ReactomeProvider("hsa"));
+		providers.add(new ReactomeProvider("mmu"));
 		providers.add(new MSigDBPositionalProvider());
 		//providers.add(new TargetScanProvider()); //migrating to mirgate
 		providers.add(new EnsemblBandsProvider("mus musculus"));

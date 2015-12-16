@@ -34,9 +34,9 @@ public class ReactomeProvider extends AbstractGeneSetProvider {
 	}
 
 	public String getOrganism() {
-		if (this.specie.equalsIgnoreCase("homo sapiens")) 
+		if (this.specie.equalsIgnoreCase("hsa")) 
 				return "homo sapiens";
-		else if (this.specie.equalsIgnoreCase("mus musculus")) 
+		else if (this.specie.equalsIgnoreCase("mmu")) 
 				return "mus musculus"; 
 		return "homo sapiens"; //????
 	}

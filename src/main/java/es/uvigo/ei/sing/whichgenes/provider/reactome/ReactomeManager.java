@@ -38,7 +38,7 @@ public class ReactomeManager {
 		System.gc();
 	}
 
-	private static List<String> retrievePathways(String specie) {
+	/*private static List<String> retrievePathways(String specie) {
 		String[] pathways = Util.runRobot("/es/uvigo/ei/sing/whichgenes/provider/reactome/getpathways.xml", new String[]{specie});
 		List<String> list = new LinkedList<String>();
 		for (String path: pathways){
@@ -54,10 +54,10 @@ public class ReactomeManager {
 			Collections.sort(pathways.get(specie));
 		}
 		return pathways.get(specie);
-	}
+	}*/
 		
 	public static Collection<String> retrieveGenesFromPathay(String pathid, String specie) throws RemoteException {
-		String[] genes = Util.runRobot("/es/uvigo/ei/sing/whichgenes/provider/reactome/getensbypath.xml", new String[]{pathid});
+		String[] genes = Util.runRobot("/es/uvigo/ei/sing/whichgenes/provider/reactome/getgenesbypath.rb", new String[]{pathid});
 		
 		
 		
