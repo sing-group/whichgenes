@@ -17,6 +17,7 @@
 
 package es.uvigo.ei.sing.whichgenes.provider.idconverter;
 
+import java.util.Arrays;
 import java.util.HashSet;
 
 import es.uvigo.ei.sing.whichgenes.provider.aautomator.Util;
@@ -90,6 +91,15 @@ public class IDConverter {
 		}
 		return null;
 		
+	}
+	public static String[] convert(String specie, String[] from, String to, String[] ids) {
+		HashSet<String> results = new HashSet<String>();
+		
+		for (String fromNamespace: from) {
+			results.addAll(Arrays.asList(convert(specie, fromNamespace, to, ids)));
+		}
+		
+		return results.toArray(new String[0]);
 	}
 	public static String[] convert(String from, String to, String[] ids){
 		return convert("hsapiens_gene_ensembl", from, to, ids);
