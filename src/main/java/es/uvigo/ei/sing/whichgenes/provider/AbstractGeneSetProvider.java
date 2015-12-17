@@ -17,11 +17,10 @@
 
 package es.uvigo.ei.sing.whichgenes.provider;
 
-import java.util.List;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import es.uvigo.ei.sing.whichgenes.Util;
 import es.uvigo.ei.sing.whichgenes.query.ConstrainedQuery;
 import es.uvigo.ei.sing.whichgenes.query.FreeQuery;
 import es.uvigo.ei.sing.whichgenes.query.Query;
@@ -33,7 +32,16 @@ public abstract class AbstractGeneSetProvider implements GeneSetProvider {
 
 	private String name;
 	private String description="";
+	private long testTimeout = 240000;
 	public AbstractGeneSetProvider(String name){
+		String timeoutParam = Util.getConfigParam("whichgenes.watchdog.timeout");
+		if (timeoutParam != null) {
+			try{
+				this.testTimeout = Long.parseLong(timeoutParam);
+			} catch(NumberFormatException e) {
+				log.error("watchdog timeout is not a number, ignoring");
+			}
+		}
 		this.name = name;
 	}
 	public String getDescription() {
@@ -128,7 +136,7 @@ public abstract class AbstractGeneSetProvider implements GeneSetProvider {
 		
 		testThread.start();
 		
-		testThread.join(240000);
+		testThread.join(testTimeout);
 		
 		
 		// kill thread
